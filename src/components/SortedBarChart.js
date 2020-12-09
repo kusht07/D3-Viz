@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
-import { Box, Text } from "grommet";
+import { Box } from "grommet";
 
 const SortedBarChart = React.memo((props) => {
   const { yData, min, max, len } = props;

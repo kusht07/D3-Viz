@@ -1,6 +1,6 @@
 import { Sidebar as GSide, Nav, Box } from "grommet";
 import React from "react";
-import { Menu, BarChart, Target } from "grommet-icons";
+import { Menu, BarChart } from "grommet-icons";
 
 export default function Sidebar({ gridArea }) {
   const ICON_SIZE = "36px";
