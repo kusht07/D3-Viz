@@ -47,10 +47,11 @@ const SortedBarChart = React.memo((props) => {
       .duration(1000)
       .attr("x", (d) => xScale(d.x))
       .attr("y", (d) => yScale(d.value))
+      .style("fill", "#3c5d94")
       .attr("width", xScale.bandwidth())
       .attr("height", (d) => height - yScale(d.value))
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
+      
     var svg = d3
       .selectAll(".BarViz")
       .attr("width", width + margin.left + margin.right)
