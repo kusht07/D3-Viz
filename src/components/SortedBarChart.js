@@ -1,78 +1,80 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
-import { Box } from "grommet";
+import { Box, generate } from "grommet";
+import "../App.css";
 
 const SortedBarChart = React.memo((props) => {
-  const { yData, min, max, len } = props;
+  const { yData, min, max } = props;
   const canvasRef = useRef(null);
   const yDataparse = yData.split(",").map(function (t) {
     return parseInt(t);
   });
-
-  let dataset = [];
-  let datasetObj = {};
-  for (let i = 0; i < len; i++) {
-    datasetObj["x"] = i;
-    datasetObj["value"] = yDataparse[i];
-    dataset.push(datasetObj);
-    datasetObj = {};
-  }
-
   useEffect(() => {
-    updateChart(dataset, min, max);
+    drawBarChart(yDataparse, min, max);
   });
 
-  const updateChart = (data, min, max) => {
-    let margin = { top: 20, right: 20, bottom: 20, left: 30 },
-      width = 950 - margin.left - margin.right,
+  function drawBarChart(data, min, max) {
+
+    var margin = { top: 30, right: 10, bottom: 10, left: 30 },
+      width = 960 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
 
-    const xScale = d3
+    // add x and y scales
+    var y = d3.scaleLinear().domain([min, max]).range([height, 0]).nice();
+    var x = d3
       .scaleBand()
       .domain(d3.range(data.length))
-      .range([0, width])
+      .range([0, width], 0.2)
       .padding(0.1);
 
-    const yScale = d3.scaleLinear().domain([0, 90]).range([height, 0]);
+    var yAxis = d3.axisLeft(y);
 
-    var yAxis = d3.axisLeft(yScale);
+    d3.select(".BarViz > *").remove();
 
-    let bars = d3.select(canvasRef.current).selectAll("rect").data(data);
-
-    bars
-      .enter()
-      .append("rect")
-      .merge(bars)
-      .transition()
-      .duration(1000)
-      .attr("x", (d) => xScale(d.x))
-      .attr("y", (d) => yScale(d.value))
-      .style("fill", "#3c5d94")
-      .attr("width", xScale.bandwidth())
-      .attr("height", (d) => height - yScale(d.value))
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-      
+    // set svg dimensions
     var svg = d3
-      .selectAll(".BarViz")
+      .select(canvasRef.current)
+      .append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+      
+    // draw bars  
+    svg
+      .selectAll(".bar")
+      .data(data)
+      .enter()
+      .append("rect")
+      .attr("class", function (d) {
+        return d < 0 ? "bar negative" : "bar positive";
+      })
+      .attr("y", function (d) {
+        return y(Math.max(0, d));
+      })
+      .attr("x", function (d, i) {
+        return x(i);
+      })
+      .attr("height", function (d) {
+        return Math.abs(y(d) - y(0));
+      })
+      .attr("width", x.bandwidth());
+
+
+     // Generate axes
+    svg.append("g").attr("class", "x axis").call(yAxis);
+
     svg
       .append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(xScale));
+      .attr("class", "y axis")
+      .append("line")
+      .attr("y1", y(0))
+      .attr("y2", y(0))
+      .attr("x1", 0)
+      .attr("x2", width);
+  }
 
-    svg.append("g").call(yAxis);
-  };
-
-  return (
-    <Box direction="row">
-      <div>
-        <svg className="BarViz" width="1000" height="500" ref={canvasRef} />
-      </div>
-    </Box>
-  );
-});
-
+  return <Box className="BarViz" ref={canvasRef}></Box>;
+})
 export default SortedBarChart;

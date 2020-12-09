@@ -6,18 +6,15 @@ export default function Dashboard({ gridArea }) {
   const len = 26;
   const min = -10;
   const max = 90;
-  let newArray = [];
-  for (let i = 0, t = len; i < t; i++) {
-    newArray.push(Number(Math.floor(Math.random() * (max - -min + 1)) + -min));
-  }
   const [input, setInput] = useState(5);
-  const [randomArray, setRandomArray] = useState(newArray.join());
+  const [randomArray, setRandomArray] = useState('');
 
   useEffect(() => {
     updateStorage();
   });
 
   const updateStorage = () => {
+    let newArray =[]
     for (let i = 0, t = len; i < t; i++) {
       newArray.push(
         Number(Math.floor(Math.random() * (max - -min + 1)) + -min)
@@ -32,7 +29,6 @@ export default function Dashboard({ gridArea }) {
 
   const updateInput = (event) => {
     const value = event.target.value;
-    console.log(Number(value));
     if (Number(value) <= 10 && Number(value) >= 1) setInput(value.trim());
     if (value.length < 1) setInput(value.trim());
   };
@@ -58,7 +54,7 @@ export default function Dashboard({ gridArea }) {
           </Box>
         </Box>
         <StyledBox>
-          <SortedBarChart yData={randomArray} min={min} max={max} len={len} />
+          {randomArray && <SortedBarChart yData={randomArray} min={min} max={max} />}
         </StyledBox>
       </Box>
     </Box>
