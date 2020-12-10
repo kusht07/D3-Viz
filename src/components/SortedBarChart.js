@@ -82,7 +82,9 @@ const SortedBarChart = React.memo((props) => {
 
   return (
     <Box direction="row">
-      <svg width="1200" height="500" ref={canvasRef} />
+      <div>
+        <svg width="1200" height="500" ref={canvasRef} />
+      </div>
     </Box>
   );
 });
