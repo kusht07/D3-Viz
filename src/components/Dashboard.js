@@ -3,7 +3,7 @@ import { Box, Heading, TextInput, Text } from "grommet";
 import SortedBarChart from "./SortedBarChart";
 
 export default function Dashboard({ gridArea }) {
-  const len = 50;
+  const len = 26;
   const min = 10;
   const max = 90;
   const [input, setInput] = useState(5);
@@ -15,7 +15,7 @@ export default function Dashboard({ gridArea }) {
 
   const updateStorage = () => {
     let newArray =[]
-    for (let i = 0, t = len; i < t; i++) {      
+    for (let i = 0; i < len; i++) {      
       let num = Number(Math.floor(Math.random() * (max + min + 1))  -min)
       newArray.push(num);
     }

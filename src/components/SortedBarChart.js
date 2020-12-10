@@ -16,7 +16,7 @@ const SortedBarChart = React.memo((props) => {
   const updateChart = (data, min, max) => {
     // Generate Margins
     let margin = { top: 20, right: 20, bottom: 20, left: 30 },
-      width = 1200 - margin.left - margin.right,
+      width = 1000 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
 
     // Create Scales
@@ -83,7 +83,7 @@ const SortedBarChart = React.memo((props) => {
   return (
     <Box direction="row">
       <div>
-        <svg width="1200" height="500" ref={canvasRef} />
+        <svg width="1000" height="500" ref={canvasRef} />
       </div>
     </Box>
   );
