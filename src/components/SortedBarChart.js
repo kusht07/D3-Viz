@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
-import { Box, generate } from "grommet";
+import { Box } from "grommet";
 import "../App.css";
 
 const SortedBarChart = React.memo((props) => {
@@ -9,72 +9,83 @@ const SortedBarChart = React.memo((props) => {
   const yDataparse = yData.split(",").map(function (t) {
     return parseInt(t);
   });
+
   useEffect(() => {
-    drawBarChart(yDataparse, min, max);
+    updateChart(yDataparse, min, max);
   });
 
-  function drawBarChart(data, min, max) {
-
-    var margin = { top: 30, right: 10, bottom: 10, left: 30 },
-      width = 960 - margin.left - margin.right,
+  const updateChart = (data, min, max) => {
+    // Generate Margins
+    let margin = { top: 20, right: 20, bottom: 20, left: 30 },
+      width = 950 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
 
-    // add x and y scales
-    var y = d3.scaleLinear().domain([min, max]).range([height, 0]).nice();
-    var x = d3
+    // Create Scales
+    const xScale = d3
       .scaleBand()
       .domain(d3.range(data.length))
-      .range([0, width], 0.2)
+      .range([0, width])
       .padding(0.1);
 
-    var yAxis = d3.axisLeft(y);
+    const yScale = d3
+      .scaleLinear()
+      .domain([min, max])
+      .range([height, 0])
+      .nice();
 
-    d3.select(".BarViz > *").remove();
+    var yAxis = d3.axisLeft(yScale); //define Yaxis
 
-    // set svg dimensions
+    // Set svg to width and height
+
     var svg = d3
       .select(canvasRef.current)
-      .append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      
-    // draw bars  
-    svg
-      .selectAll(".bar")
-      .data(data)
+    let bars = d3.select(canvasRef.current).selectAll("rect").data(data);
+    // Generate and merge bars
+    bars
       .enter()
       .append("rect")
+      .merge(bars)
       .attr("class", function (d) {
         return d < 0 ? "bar negative" : "bar positive";
       })
+      .transition()
+      .duration(1000)
       .attr("y", function (d) {
-        return y(Math.max(0, d));
+        return yScale(Math.max(0, d));
       })
       .attr("x", function (d, i) {
-        return x(i);
+        return xScale(i);
       })
       .attr("height", function (d) {
-        return Math.abs(y(d) - y(0));
+        return Math.abs(yScale(d) - yScale(0));
       })
-      .attr("width", x.bandwidth());
+      .attr("width", xScale.bandwidth())
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-
-     // Generate axes
-    svg.append("g").attr("class", "x axis").call(yAxis);
-
+    // Create axes
     svg
       .append("g")
-      .attr("class", "y axis")
+      .attr("class", "x axis")
       .append("line")
-      .attr("y1", y(0))
-      .attr("y2", y(0))
+      .attr("y1", yScale(0))
+      .attr("y2", yScale(0))
       .attr("x1", 0)
       .attr("x2", width);
-  }
 
-  return <Box className="BarViz" ref={canvasRef}></Box>;
-})
+    svg.append("g").attr("class", "y axis").call(yAxis);
+    bars.exit().remove();
+  };
+
+  return (
+    <Box direction="row">
+      <svg width="1000" height="500" ref={canvasRef} />
+    </Box>
+  );
+});
+
 export default SortedBarChart;

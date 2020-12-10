@@ -1,23 +1,18 @@
-
-bar { fill:#3c5d94 }
-
-
 .bar.positive {
-    fill: #3c5d94;
-  }
-  
-  .bar.negative {
-    fill: brown;
-  }
-  
-  .axis text {
-    font: 10px sans-serif;
-  }
-  
-  .axis path,
-  .axis line {
-    fill: none;
-    stroke: #000;
-    shape-rendering: crispEdges;
-  }
-  
+  fill: #3c5d94;
+}
+
+.bar.negative {
+  fill: brown;
+}
+
+.axis text {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}

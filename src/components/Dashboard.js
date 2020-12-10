@@ -42,19 +42,19 @@ export default function Dashboard({ gridArea }) {
         overflow="auto"
         elevation="medium"
       >
-        <Box pad={{ bottom: "medium" }} gap="small" direction="row">
+        <Box pad={{ bottom: "medium" }} gap="medium" direction="row">
           <Heading level={3} size="small" margin="small" color="brand">
-            Input :
+            Input:
           </Heading>
-          <Box>
+          <Box  gap='xsmall'>
             <TextInput value={input} onChange={updateInput} />
             <Box>
-              <Text> Enter Value between 1-10</Text>
+              <Text size='small'> Enter Value between 1-10</Text>
             </Box>
           </Box>
         </Box>
         <StyledBox>
-          {randomArray && <SortedBarChart yData={randomArray} min={min} max={max} />}
+          {randomArray && <SortedBarChart yData={randomArray} min={min} max={max}  />}
         </StyledBox>
       </Box>
     </Box>
