@@ -3,8 +3,8 @@ import { Box, Heading, TextInput, Text } from "grommet";
 import SortedBarChart from "./SortedBarChart";
 
 export default function Dashboard({ gridArea }) {
-  const len = 26;
-  const min = -10;
+  const len = 50;
+  const min = 10;
   const max = 90;
   const [input, setInput] = useState(5);
   const [randomArray, setRandomArray] = useState('');
@@ -15,10 +15,9 @@ export default function Dashboard({ gridArea }) {
 
   const updateStorage = () => {
     let newArray =[]
-    for (let i = 0, t = len; i < t; i++) {
-      newArray.push(
-        Number(Math.floor(Math.random() * (max - -min + 1)) + -min)
-      );
+    for (let i = 0, t = len; i < t; i++) {      
+      let num = Number(Math.floor(Math.random() * (max + min + 1))  -min)
+      newArray.push(num);
     }
     if (input && !sessionStorage.getItem(input))
       sessionStorage.setItem(input, newArray);
