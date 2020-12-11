@@ -19,11 +19,11 @@ export default function Dashboard({ gridArea }) {
       let num = Number(Math.floor(Math.random() * (max + min + 1)) - min);
       newArray.push(num);
     }
-    if (input) {
-      if (!sessionStorage.getItem(input))
-        sessionStorage.setItem(input, newArray);
-      else setRandomArray(sessionStorage.getItem(input));
-    }
+    if (input && !sessionStorage.getItem(input))
+      sessionStorage.setItem(input, newArray);
+
+    if (input && sessionStorage.getItem(input))
+      setRandomArray(sessionStorage.getItem(input));
   };
 
   const updateInput = (event) => {
