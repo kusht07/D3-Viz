@@ -3,8 +3,7 @@ import * as d3 from "d3";
 import { Box } from "grommet";
 import "../App.css";
 
-const SortedBarChart = React.memo((props) => {
-  const { yData, min, max } = props;
+export default function SortedBarChart({ yData, min, max }) {
   const canvasRef = useRef(null);
   const yDataparse = yData.split(",").map(function (t) {
     return parseInt(t);
@@ -81,12 +80,10 @@ const SortedBarChart = React.memo((props) => {
   };
 
   return (
-    <Box direction="row">
-      <div>
+    <Box>
         <svg width="1000" height="500" ref={canvasRef} />
-      </div>
     </Box>
   );
-});
+};
 
-export default SortedBarChart;
+// export default SortedBarChart;

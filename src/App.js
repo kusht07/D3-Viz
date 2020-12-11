@@ -2,16 +2,10 @@ import React from "react";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard";
-
 import { theme } from "./styling/theme";
-
 import { Grommet, Grid } from "grommet";
 
 const App = () => {
-  // useEffect(() => {
-  //   sessionStorage.clear();
-  // });
-
   return (
     <Grommet className="App" full theme={theme}>
       <Grid
